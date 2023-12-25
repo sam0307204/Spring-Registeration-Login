@@ -3,22 +3,41 @@ package com.spring.employee.controller;
 import java.util.List;
 
 import jakarta.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 
 import com.spring.employee.dto.UserDto;
+import com.spring.employee.model.PasswordResetToken;
 import com.spring.employee.model.User;
+import com.spring.employee.repository.TokenReposirory;
+import com.spring.employee.repository.UserRepository;
 import com.spring.employee.service.UserService;
+import com.spring.employee.service.impl.UserServiceImpl;
 
 @Controller
 public class AuthController {
 
     private UserService userService;
+
+    @Autowired
+    UserServiceImpl userServiceImpl;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    TokenReposirory tokenReposirory;
+
+    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public AuthController(UserService userService) {
         this.userService = userService;
@@ -65,4 +84,42 @@ public class AuthController {
         model.addAttribute("users", users);
         return "users";
     }
+
+    @GetMapping("/forgotPassword")
+	public String forgotPassword() {
+		return "forgotPassword";
+	}
+
+	@PostMapping("/forgotPassword")
+	public String forgotPassordProcess(@ModelAttribute UserDto userDTO) {
+		String output = "";
+		User user = userRepository.findByEmail(userDTO.getEmail());
+		if (user != null) {
+			output = userServiceImpl.sendEmail(user);
+		}
+		if (output.equals("success")) {
+			return "redirect:/forgotPassword?success";
+		}
+		return "redirect:/login?error";
+	}
+
+	@GetMapping("/resetPassword/{token}")
+	public String resetPasswordForm(@PathVariable String token, Model model) {
+		PasswordResetToken reset = tokenReposirory.findByToken(token);
+		if (reset != null && userServiceImpl.hasExipred(reset.getExpiryDateTime())) {
+			model.addAttribute("email", reset.getUser().getEmail());
+			return "resetPassword";
+		}
+		return "redirect:/forgotPassword?error";
+	}
+	
+	@PostMapping("/resetPassword")
+	public String passwordResetProcess(@ModelAttribute UserDto userDTO) {
+		User user = userRepository.findByEmail(userDTO.getEmail());
+		if(user != null) {
+			user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+			userRepository.save(user);
+		}
+		return "redirect:/login";
+	}
 }
