@@ -90,13 +90,13 @@ public class UserServiceImpl implements UserService  {
     }
 
 
+    
     //Send email to the user email address.
     public String sendEmail(User user) {
 		try {
 			String resetLink = generateResetToken(user);
-
 			SimpleMailMessage msg = new SimpleMailMessage();
-			msg.setFrom("kumarnexi2511@gmail.com");// input the senders email ID
+			msg.setFrom("dhanushkumar.nexitence@gmail.com");// input the senders email ID
 			msg.setTo(user.getEmail());
 
 			msg.setSubject("Welcome To My Company");
@@ -124,7 +124,8 @@ public class UserServiceImpl implements UserService  {
 		resetToken.setUser(user);
 		PasswordResetToken token = tokenReposirory.save(resetToken);
 		if (token != null) {
-			String endpointUrl = "http://localhost:8080/resetPassword";
+            
+			String endpointUrl = "http://10.10.9.163:8080/resetPassword";
 			return endpointUrl + "/" + resetToken.getToken();
 		}
 		return "";
@@ -136,4 +137,5 @@ public class UserServiceImpl implements UserService  {
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		return expiryDateTime.isAfter(currentDateTime);
 	}
+
 }

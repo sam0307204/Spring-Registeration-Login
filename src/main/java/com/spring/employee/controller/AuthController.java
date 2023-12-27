@@ -108,6 +108,7 @@ public class AuthController {
 		PasswordResetToken reset = tokenReposirory.findByToken(token);
 		if (reset != null && userServiceImpl.hasExipred(reset.getExpiryDateTime())) {
 			model.addAttribute("email", reset.getUser().getEmail());
+            // tokenReposirory.delete(reset);
 			return "resetPassword";
 		}
 		return "redirect:/forgotPassword?error";

@@ -32,7 +32,7 @@ public class SpringSecurity {
                                 .requestMatchers("/index").permitAll()
                                 .requestMatchers("/forgotPassword").permitAll()
                                 .requestMatchers("/resetPassword/**").permitAll()
-                                .requestMatchers("/users/**").authenticated()
+                                .requestMatchers("/users").authenticated()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
