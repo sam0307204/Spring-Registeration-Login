@@ -138,15 +138,15 @@ public class AuthController {
 
     @PostMapping("/users/profile/save")
     public String submitUserDetails(@ModelAttribute UserDetailsDto userDetailsDTO, Principal principal) {
-    UserDetails userDetails = new UserDetails();
-    userDetails.setAddress(userDetailsDTO.getAddress());
-    userDetails.setPhoneNumber(userDetailsDTO.getPhoneNumber());
+        UserDetails userDetails = new UserDetails();
+        userDetails.setAddress(userDetailsDTO.getAddress());
+        userDetails.setPhoneNumber(userDetailsDTO.getPhoneNumber());
 
-    User currentUser = userRepository.findByEmail(principal.getName());
-    userDetails.setUser(currentUser);
+        User currentUser = userRepository.findByEmail(principal.getName());
+        userDetails.setUser(currentUser);
 
-    userDetailsRepository.save(userDetails);
+        userDetailsRepository.save(userDetails);
 
-    return "redirect:/users";
-}
+        return "redirect:/users";
+    }
 }

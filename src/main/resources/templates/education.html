@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Employee Form</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f5f5f5;
+      }
+
+      h1 {
+        text-align: center;
+        margin-top: 50px;
+      }
+
+      form {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.1);
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      button {
+        width: 100%;
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Employee Form</h1>
+    <form
+      id="employeeForm"
+      action="#"
+      th:action="@{/users/profile/education/save}"
+      th:object="${educationDto}"
+      method="post"
+    >
+      <label for="hscMark">HSC Mark</label>
+      <input
+        type="text"
+        id="hscMark"
+        name="hscMark"
+        th:field="*{hscMark}"
+        required
+      />
+
+      <label for="sslcMark">SSLC Mark</label>
+      <input
+        type="text"
+        id="sslcMark"
+        name="sslcMark"
+        th:field="*{sslcMark}"
+        required
+      />
+
+      <label for="institution">Institution</label>
+      <input
+        type="text"
+        id="institution"
+        name="institution"
+        th:field="*{institution}"
+        required
+      />
+
+      <label for="branch">Branch</label>
+      <input
+        type="text"
+        id="branch"
+        name="branch"
+        th:field="*{branch}"
+        required
+      />
+
+      <label for="cgpa">CGPA</label>
+      <input type="text" id="cgpa" name="cgpa" th:field="*{cgpa}" required />
+
+      <button type="submit">Submit</button>
+    </form>
+  </body>
+</html>
