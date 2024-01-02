@@ -1,5 +1,6 @@
 package com.spring.employee.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import jakarta.validation.Valid;
@@ -14,11 +15,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-
+import com.spring.employee.dto.UserDetailsDto;
 import com.spring.employee.dto.UserDto;
 import com.spring.employee.model.PasswordResetToken;
 import com.spring.employee.model.User;
+import com.spring.employee.model.UserDetails;
 import com.spring.employee.repository.TokenReposirory;
+import com.spring.employee.repository.UserDetailsRepository;
 import com.spring.employee.repository.UserRepository;
 import com.spring.employee.service.UserService;
 import com.spring.employee.service.impl.UserServiceImpl;
@@ -36,6 +39,9 @@ public class AuthController {
 
     @Autowired
     TokenReposirory tokenReposirory;
+
+    @Autowired
+    UserDetailsRepository userDetailsRepository;
 
     private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -122,4 +128,25 @@ public class AuthController {
 		}
 		return "redirect:/login";
 	}
+
+    @GetMapping("/users/profile")
+	public String userDetails(Model model) {
+        UserDetailsDto user = new UserDetailsDto();
+        model.addAttribute("userDetailsDTO", user);
+		return "userDetails";
+	}
+
+    @PostMapping("/users/profile/save")
+    public String submitUserDetails(@ModelAttribute UserDetailsDto userDetailsDTO, Principal principal) {
+    UserDetails userDetails = new UserDetails();
+    userDetails.setAddress(userDetailsDTO.getAddress());
+    userDetails.setPhoneNumber(userDetailsDTO.getPhoneNumber());
+
+    User currentUser = userRepository.findByEmail(principal.getName());
+    userDetails.setUser(currentUser);
+
+    userDetailsRepository.save(userDetails);
+
+    return "redirect:/users";
+}
 }
