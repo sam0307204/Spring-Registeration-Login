@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.spring.employee.dto.BankDto;
 import com.spring.employee.dto.EducationDto;
 import com.spring.employee.dto.PersonalDto;
 import com.spring.employee.repository.EducationRepository;
@@ -59,6 +60,23 @@ public class UserDetailsController {
     public String submitEducation(@ModelAttribute EducationDto educationDto,Principal principal){
         String output="";
         output=userDetailsServiceImpl.saveEducation(educationDto,principal);
+        if (output.equals("success")) {
+			return "redirect:/users?success";
+		}
+        return "redirect:/users?error";
+    }
+
+    @GetMapping("/users/profile/bank")
+	public String userBank(Model model) {
+        BankDto user = new BankDto();
+        model.addAttribute("bankDto", user);
+		return "bank";
+	}
+
+    @PostMapping("/users/profile/bank/save")
+    public String submitBank(@ModelAttribute BankDto bankDto,Principal principal){
+        String output="";
+        output=userDetailsServiceImpl.saveBank(bankDto,principal);
         if (output.equals("success")) {
 			return "redirect:/users?success";
 		}

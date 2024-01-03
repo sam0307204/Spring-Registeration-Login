@@ -19,17 +19,18 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "education_details")
-public class EducationDetails {
+@Table(name = "bank_details")
+public class BankDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String hscMark;
-    private String sslcMark;
-    private String institution;
-    private String branch;
-    private String cgpa;
+    private String accountNumber;
+    private String ifscCode;
+    private String bankName;
+    private String branchName;
+    private String phoneNumber;
+    private String email;
 
     @OneToOne(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)

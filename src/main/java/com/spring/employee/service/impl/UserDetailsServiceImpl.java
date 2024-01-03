@@ -5,11 +5,14 @@ import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.spring.employee.dto.BankDto;
 import com.spring.employee.dto.EducationDto;
 import com.spring.employee.dto.PersonalDto;
+import com.spring.employee.model.BankDetails;
 import com.spring.employee.model.EducationDetails;
 import com.spring.employee.model.PersonalDetails;
 import com.spring.employee.model.User;
+import com.spring.employee.repository.BankRepository;
 import com.spring.employee.repository.EducationRepository;
 import com.spring.employee.repository.PersonalRepository;
 import com.spring.employee.repository.UserRepository;
@@ -25,6 +28,9 @@ public class UserDetailsServiceImpl {
 
     @Autowired
     EducationRepository educationRepository;
+
+    @Autowired
+    BankRepository bankRepository;
 
     public UserDetailsServiceImpl(UserRepository userRepository,
                            PersonalRepository personalRepository,
@@ -66,6 +72,23 @@ public class UserDetailsServiceImpl {
         educationDetails.setUser(currentuser);
 
         educationRepository.save(educationDetails);
+        return "success";
+    }
+
+    public String saveBank(BankDto bankDto, Principal principal) {
+        BankDetails bankDetails= new BankDetails();
+        bankDetails.setAccountNumber(bankDto.getAccountNumber());
+        bankDetails.setBankName(bankDto.getBankName());
+        bankDetails.setBranchName(bankDto.getBranchName());
+        bankDetails.setEmail(bankDto.getEmail());
+        bankDetails.setIfscCode(bankDto.getIfscCode());
+        bankDetails.setPhoneNumber(bankDto.getPhoneNumber());
+
+        User currentuser=userRepository.findByEmail(principal.getName());
+        bankDetails.setUser(currentuser);
+
+        bankRepository.save(bankDetails);
+
         return "success";
     }
     
