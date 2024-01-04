@@ -12,12 +12,15 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.spring.employee.dto.UserDetailsDto;
 import com.spring.employee.dto.UserDto;
 import com.spring.employee.model.User;
+import com.spring.employee.model.UserDetails;
 import com.spring.employee.model.PasswordResetToken;
 import com.spring.employee.model.Role;
 import com.spring.employee.repository.RoleRepository;
 import com.spring.employee.repository.TokenReposirory;
+import com.spring.employee.repository.UserDetailsRepository;
 import com.spring.employee.repository.UserRepository;
 import com.spring.employee.service.UserService;
 
@@ -27,6 +30,7 @@ public class UserServiceImpl implements UserService  {
 
     private UserRepository userRepository;
     private RoleRepository roleRepository;
+    private UserDetailsRepository userDetailsRepository;
     private PasswordEncoder passwordEncoder;
 
     @Autowired
@@ -37,10 +41,12 @@ public class UserServiceImpl implements UserService  {
 
     public UserServiceImpl(UserRepository userRepository,
                            RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
+                           PasswordEncoder passwordEncoder,
+                           UserDetailsRepository userDetailsRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
+        this.userDetailsRepository=userDetailsRepository;
     }
 
 
@@ -136,4 +142,16 @@ public class UserServiceImpl implements UserService  {
 		LocalDateTime currentDateTime = LocalDateTime.now();
 		return expiryDateTime.isAfter(currentDateTime);
 	}
+
+
+    public UserDetailsDto getUserDetails(Long userId) {
+        UserDetails userDetails=userDetailsRepository.findByUserId(userId);
+        UserDetailsDto userDetailsDto=new UserDetailsDto();
+
+        if(userDetails!=null){
+            userDetailsDto.setAddress(userDetails.getAddress());
+            userDetailsDto.setPhoneNumber(userDetails.getPhoneNumber());
+        }
+        return userDetailsDto;
+    }
 }

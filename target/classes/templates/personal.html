@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -87,7 +87,7 @@
       </div>
       <div>
         <label for="dateOfBirth">Date of Birth</label>
-        <input type="date" id="dateOfBirth" name="dateOfBirth" required th:field="*{dateOfBirth}" />
+        <input type="date" id="dateOfBirth" name="dateOfBirth" required th:field="*{dateOfBirth}"  />
 
         <label for="bloodGroup">Blood Group</label>
         <input type="text" id="bloodGroup" name="bloodGroup" required th:field="*{bloodGroup}" />

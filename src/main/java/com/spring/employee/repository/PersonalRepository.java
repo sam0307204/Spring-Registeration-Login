@@ -7,5 +7,5 @@ import com.spring.employee.model.PersonalDetails;
 
 @Repository
 public interface PersonalRepository extends CrudRepository<PersonalDetails, Long> {
-    
+    PersonalDetails findByUserId(Long userId);
 }

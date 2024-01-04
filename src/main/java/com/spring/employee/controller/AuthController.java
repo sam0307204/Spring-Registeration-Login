@@ -130,9 +130,15 @@ public class AuthController {
 	}
 
     @GetMapping("/users/profile")
-	public String userDetails(Model model) {
-        UserDetailsDto user = new UserDetailsDto();
-        model.addAttribute("userDetailsDTO", user);
+	public String  userDetails(Model model,Principal principal) {
+        User currentUser = userRepository.findByEmail(principal.getName());
+        UserDetails userDetails=userDetailsRepository.findByUserId(currentUser.getId());
+        UserDetailsDto userDetailsDto=new UserDetailsDto();
+        if(userDetails!=null){
+            userDetailsDto.setAddress(userDetails.getAddress());
+            userDetailsDto.setPhoneNumber(userDetails.getPhoneNumber());
+        }
+        model.addAttribute("userDetailsDTO", userDetailsDto);
 		return "userDetails";
 	}
 

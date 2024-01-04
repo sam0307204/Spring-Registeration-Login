@@ -16,9 +16,10 @@ import com.spring.employee.repository.BankRepository;
 import com.spring.employee.repository.EducationRepository;
 import com.spring.employee.repository.PersonalRepository;
 import com.spring.employee.repository.UserRepository;
+import com.spring.employee.service.UserDetailsService;
 
 @Service
-public class UserDetailsServiceImpl {
+public class UserDetailsServiceImpl implements UserDetailsService{
 
     @Autowired
     UserRepository userRepository;
@@ -90,6 +91,32 @@ public class UserDetailsServiceImpl {
         bankRepository.save(bankDetails);
 
         return "success";
+    }
+
+    @Override
+    public PersonalDto getPersonalDto(User user) {
+        PersonalDetails personalDetails=personalRepository.findByUserId(user.getId());
+        PersonalDto personalDto=new PersonalDto();
+        if(personalDetails!=null){
+            personalDto.setAll(personalDetails);
+        }
+        return personalDto;
+    }
+
+    @Override
+    public EducationDto getEducationDto(User user) {
+        EducationDetails educationDetails = educationRepository.findByUserId(user.getId());
+        EducationDto educationDto = new EducationDto();
+        if (educationDetails != null) educationDto.setAll(educationDetails);
+       return educationDto;
+    }
+
+    @Override
+    public BankDto getBankDto(User user) {
+        BankDetails bankDetails=bankRepository.findByUserId(user.getId());
+        BankDto bankDto=new BankDto();
+        if(bankDetails!=null) bankDto.setAll(bankDetails);
+       return bankDto;
     }
     
 }
