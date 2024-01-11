@@ -23,7 +23,7 @@ public class User {
     @Column(nullable=false)
     private String name;
 
-    @Column(nullable=false, unique=true)
+    @Column(nullable=false)
     private String email;
 
     @Column(nullable=false)
@@ -53,5 +53,6 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private BankDetails bankDetails;
 
-
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    private List<Description> descriptions;
 }

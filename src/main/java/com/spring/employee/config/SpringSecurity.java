@@ -33,12 +33,13 @@ public class SpringSecurity {
                                 .requestMatchers("/profile/**").permitAll()
                                 .requestMatchers("/forgotPassword").permitAll()
                                 .requestMatchers("/resetPassword/**").permitAll()
+                                .requestMatchers("/home/**").authenticated()
                                 .requestMatchers("/users/**").authenticated()
                 ).formLogin(
                         form -> form
                                 .loginPage("/login")
                                 .loginProcessingUrl("/login")
-                                .defaultSuccessUrl("/users",true)
+                                .defaultSuccessUrl("/home",true)
                                 .permitAll()
                 ).logout(
                         logout -> logout
